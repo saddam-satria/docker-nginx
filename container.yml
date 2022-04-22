@@ -1,0 +1,29 @@
+version: '3.3'
+
+services:
+  server_node:
+    build:
+      context: server
+    container_name: server_node
+    ports:
+      - '5000:5000'
+    networks:
+      main:
+        aliases:
+          - server_node
+  nginx:
+    build:
+      context: nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - '80:80'
+    container_name: webserver
+    depends_on:
+      - server_node
+    networks:
+      main:
+        aliases:
+          - nginx
+networks:
+  main:
